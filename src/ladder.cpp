@@ -76,28 +76,12 @@ vector<string> generate_word_ladder(const string &begin_word, const string &end_
 
         unsigned int current_word_len = current_word.size();
 
-        if (current_word_len < end_word.size()) {
-            // the current word is smaller than the end word
-            for (unsigned int i = 0; i <= current_word_len; ++i) {
-                // add new letter
-                for (unsigned int letter = 'a'; letter <= 'z'; ++letter) {
-                    string new_word_candidate = current_word;
-                    new_word_candidate.insert(i, 1, static_cast<char>(letter));
-                    // if it is a valid word that has not been seen, add it to the next_word queue
-                    if (word_list.find(new_word_candidate) != word_list.end() && visited.find(new_word_candidate) ==
-                        visited.end()) {
-                        stack<string> updated_path = current_path;
-                        updated_path.push(new_word_candidate);
-                        next_word.push(updated_path);
-                        visited.insert(new_word_candidate);
-                    }
-                }
-            }
-        } else if (current_word_len > end_word.size()) {
-            // the current word is larger than the end word
-            for (unsigned int i = 0; i < current_word_len; ++i) {
+        // the current word is smaller than the end word
+        for (unsigned int i = 0; i <= current_word_len; ++i) {
+            // add new letter
+            for (unsigned int letter = 'a'; letter <= 'z'; ++letter) {
                 string new_word_candidate = current_word;
-                new_word_candidate.erase(i, 1);
+                new_word_candidate.insert(i, 1, static_cast<char>(letter));
                 // if it is a valid word that has not been seen, add it to the next_word queue
                 if (word_list.find(new_word_candidate) != word_list.end() && visited.find(new_word_candidate) ==
                     visited.end()) {
@@ -106,6 +90,20 @@ vector<string> generate_word_ladder(const string &begin_word, const string &end_
                     next_word.push(updated_path);
                     visited.insert(new_word_candidate);
                 }
+            }
+        }
+
+        // the current word is larger than the end word
+        for (unsigned int i = 0; i < current_word_len; ++i) {
+            string new_word_candidate = current_word;
+            new_word_candidate.erase(i, 1);
+            // if it is a valid word that has not been seen, add it to the next_word queue
+            if (word_list.find(new_word_candidate) != word_list.end() && visited.find(new_word_candidate) ==
+                visited.end()) {
+                stack<string> updated_path = current_path;
+                updated_path.push(new_word_candidate);
+                next_word.push(updated_path);
+                visited.insert(new_word_candidate);
             }
         }
 
