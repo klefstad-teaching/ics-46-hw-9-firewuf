@@ -41,25 +41,33 @@ bool is_adjacent(const string &word1, const string &word2) {
 
 vector<string> generate_word_ladder(const string &begin_word, const string &end_word, const set<string> &word_list) {
     // if the end word is not in the word list
-    if (word_list.find(end_word) == word_list.end()) return vector<string>();
+    if (word_list.find(end_word) == word_list.end()) {
+        return vector<string>();
+    }
+    if (begin_word == end_word) {
+        error(begin_word, " is equal to ", end_word);
+        return vector<string>();
+    }
 
-    queue<string> next_word;
-    map<string, string> current_prev;
+    queue<stack<string>> next_word;
     set<string> visited;
 
-    next_word.push(begin_word);
+    next_word.push(stack<string>({begin_word}));
     visited.insert(begin_word);
     while (!next_word.empty()) {
-        string current_word = next_word.front();
+        stack<string> current_path = next_word.front();
+        string current_word = current_path.top();
         next_word.pop();
 
         if (current_word == end_word) {
             vector<string> path;
 
-            string current_word_in_path = end_word;
+            string current_word_in_path = current_path.top();
             while (current_word_in_path != begin_word) {
                 path.insert(path.begin(), 1, current_word_in_path);
-                current_word_in_path = current_prev[current_word_in_path];
+
+                current_path.pop();
+                current_word_in_path = current_path.top();
             }
             path.insert(path.begin(), 1, begin_word);
 
@@ -78,8 +86,9 @@ vector<string> generate_word_ladder(const string &begin_word, const string &end_
                     // if it is a valid word that has not been seen, add it to the next_word queue
                     if (word_list.find(new_word_candidate) != word_list.end() && visited.find(new_word_candidate) ==
                         visited.end()) {
-                        next_word.push(new_word_candidate);
-                        current_prev[new_word_candidate] = current_word;
+                        stack<string> updated_path = current_path;
+                        updated_path.push(new_word_candidate);
+                        next_word.push(updated_path);
                         visited.insert(new_word_candidate);
                     }
                 }
@@ -92,8 +101,9 @@ vector<string> generate_word_ladder(const string &begin_word, const string &end_
                 // if it is a valid word that has not been seen, add it to the next_word queue
                 if (word_list.find(new_word_candidate) != word_list.end() && visited.find(new_word_candidate) ==
                     visited.end()) {
-                    next_word.push(new_word_candidate);
-                    current_prev[new_word_candidate] = current_word;
+                    stack<string> updated_path = current_path;
+                    updated_path.push(new_word_candidate);
+                    next_word.push(updated_path);
                     visited.insert(new_word_candidate);
                 }
             }
@@ -107,8 +117,9 @@ vector<string> generate_word_ladder(const string &begin_word, const string &end_
                 // if it is a valid word that has not been seen, add it to the next_word queue
                 if (word_list.find(new_word_candidate) != word_list.end() && visited.find(new_word_candidate) ==
                     visited.end()) {
-                    next_word.push(new_word_candidate);
-                    current_prev[new_word_candidate] = current_word;
+                    stack<string> updated_path = current_path;
+                    updated_path.push(new_word_candidate);
+                    next_word.push(updated_path);
                     visited.insert(new_word_candidate);
                 }
             }

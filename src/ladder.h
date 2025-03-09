@@ -1,6 +1,7 @@
 #include <iostream>
 #include <fstream>
 #include <queue>
+#include <stack>
 #include <set>
 #include <map>
 #include <vector>
