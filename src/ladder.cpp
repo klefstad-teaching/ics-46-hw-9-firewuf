@@ -25,7 +25,7 @@ bool edit_distance_within(const std::string &str1, const std::string &str2, int 
             distance_matrix[row][column] = distance;
         }
     }
-    return distance_matrix[row_max-1][column_max-1] <= d;
+    return static_cast<int>(distance_matrix[row_max-1][column_max-1]) <= d;
 }
 
 bool is_adjacent(const string &word1, const string &word2) {
