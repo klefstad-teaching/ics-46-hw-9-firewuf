@@ -4,12 +4,33 @@ void error(string word1, string word2, string msg) {
     std::cout << word1 << msg << word2;
 }
 
-/*
 bool edit_distance_within(const std::string &str1, const std::string &str2, int d) {
+    vector<vector<unsigned int>> distance_matrix;
+    unsigned int column_max = str1.size(); // from (horizontal)
+    unsigned int row_max = str2.size(); // to (vertical)
+
+    for (unsigned int row = 0; row < row_max; ++row) {
+        for (unsigned int column = 0; column < column_max; ++column) {
+            unsigned int distance;
+            if (row == 0) {
+                distance = column;
+            }else if (column == 0) {
+                distance = row;
+            } else if (str1[column] != str2[row]) {
+                distance = min(distance_matrix[row][column-1], distance_matrix[row-1][column-1], distance_matrix[row-1][column])+1;
+            } else {
+                distance = distance_matrix[row-1][column-1];
+            }
+
+            distance_matrix[row][column] = distance;
+        }
+    }
+    return distance_matrix[row_max-1][column_max-1] <= d;
 }
 
 bool is_adjacent(const string &word1, const string &word2) {
-}*/
+    return edit_distance_within(word1, word2, 1);
+}
 
 vector<string> generate_word_ladder(const string &begin_word, const string &end_word, const set<string> &word_list) {
     // if the end word is not in the word list
@@ -103,7 +124,5 @@ void print_word_ladder(const vector<string> &ladder) {
     for (const string &word: ladder) std::cout << word << ' ';
 }
 
-/*
 void verify_word_ladder() {
 }
-*/
