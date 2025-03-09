@@ -6,8 +6,15 @@ void error(string word1, string word2, string msg) {
 
 bool edit_distance_within(const std::string &str1, const std::string &str2, int d) {
     vector<vector<unsigned int>> distance_matrix;
-    unsigned int column_max = str1.size(); // from (horizontal)
-    unsigned int row_max = str2.size(); // to (vertical)
+    unsigned int column_max = str1.size()+1; // from (horizontal)
+    unsigned int row_max = str2.size()+1; // to (vertical)
+
+    for (unsigned int row = 0; row < row_max; ++row) {
+        distance_matrix.push_back(vector<unsigned int>());
+        for (unsigned int column = 0; column < column_max; ++column) {
+            distance_matrix[row].push_back(0);
+        }
+    }
 
     for (unsigned int row = 0; row < row_max; ++row) {
         for (unsigned int column = 0; column < column_max; ++column) {
@@ -16,8 +23,8 @@ bool edit_distance_within(const std::string &str1, const std::string &str2, int 
                 distance = column;
             }else if (column == 0) {
                 distance = row;
-            } else if (str1[column] != str2[row]) {
-                distance = min(distance_matrix[row][column-1], distance_matrix[row-1][column-1], distance_matrix[row-1][column])+1;
+            } else if (str1[column-1] != str2[row-1]) {
+                distance = min({distance_matrix[row][column-1], distance_matrix[row-1][column-1], distance_matrix[row-1][column]})+1;
             } else {
                 distance = distance_matrix[row-1][column-1];
             }
@@ -29,7 +36,7 @@ bool edit_distance_within(const std::string &str1, const std::string &str2, int 
 }
 
 bool is_adjacent(const string &word1, const string &word2) {
-    return edit_distance_within(word1, word2, 1);
+    return !edit_distance_within(word1, word2, 0) && edit_distance_within(word1, word2, 1);
 }
 
 vector<string> generate_word_ladder(const string &begin_word, const string &end_word, const set<string> &word_list) {
