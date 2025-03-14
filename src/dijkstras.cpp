@@ -10,15 +10,19 @@ vector<int> dijkstra_shortest_path(const Graph& G, int source, vector<int>& prev
     int current_vertex = source;
     visited.insert(source);
     while (visited.size() < G.size()) {
-        const vector<Edge> & edges_from_cv = G[current_vertex];
+        vector<Edge> edges_from_cv = G[current_vertex];
 
         for (Edge e: edges_from_cv) {
-            if (visited.find(e.dst) == visited.end()) next_vertex.push(e);
+            int dst_dist_from_start = distances_from_src[current_vertex]+e.weight;
 
-            int new_distance_from_src_candidate = distances_from_src[current_vertex]+e.weight;
-            if (new_distance_from_src_candidate < distances_from_src[e.dst]) {
+            if (visited.find(e.dst) == visited.end()) {
+                e.weight = dst_dist_from_start;
+                next_vertex.push(e);
+            }
+
+            if (dst_dist_from_start < distances_from_src[e.dst]) {
                 // if the new distance is less than the current distance
-                distances_from_src[e.dst] = new_distance_from_src_candidate;
+                distances_from_src[e.dst] = dst_dist_from_start;
                 previous[e.dst] = e.src;
             }
         }
