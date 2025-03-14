@@ -12,7 +12,12 @@ vector<int> dijkstra_shortest_path(const Graph& G, int source, vector<int>& prev
         vector<Edge> edges_from_cv = G[current_vertex];
 
         for (Edge e: edges_from_cv) {
-            int dst_dist_from_start = distances_from_src[current_vertex]+e.weight;
+            int dst_dist_from_start;
+            if (distances_from_src[current_vertex] == -1) {
+                dst_dist_from_start = e.weight;
+            } else {
+                dst_dist_from_start = distances_from_src[current_vertex]+e.weight;
+            }
 
             if (visited.find(e.dst) == visited.end()) {
                 e.weight = dst_dist_from_start;
