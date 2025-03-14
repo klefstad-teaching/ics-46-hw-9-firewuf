@@ -1,7 +1,6 @@
 #include "dijkstras.h"
 
 vector<int> dijkstra_shortest_path(const Graph& G, int source, vector<int>& previous) {
-    previous[source] = source;
     vector<int> distances_from_src(G.size(), INF);
     distances_from_src[source] = 0;
     set<int> visited;
