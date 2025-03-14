@@ -38,6 +38,12 @@ vector<int> dijkstra_shortest_path(const Graph& G, int source, vector<int>& prev
 }
 
 vector<int> extract_shortest_path(const vector<int>& distances, const vector<int>& previous, int destination) {
+    cerr << "previous: ";
+    for (auto p: previous) {
+        cerr << p << endl;
+    }
+    cerr << endl;
+
     vector<int> shortest_path;
 
     int current_vector = destination;
