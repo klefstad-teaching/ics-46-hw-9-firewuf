@@ -42,7 +42,7 @@ vector<int> extract_shortest_path(const vector<int>& distances, const vector<int
     vector<int> shortest_path;
 
     int current_vector = destination;
-    while (previous[current_vector] != current_vector) {
+    while (previous[current_vector] != -1) {
         shortest_path.push_back(current_vector);
 
         current_vector = previous[current_vector];
