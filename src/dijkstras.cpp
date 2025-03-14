@@ -1,10 +1,9 @@
 #include "dijkstras.h"
 
 vector<int> dijkstra_shortest_path(const Graph& G, int source, vector<int>& previous) {
-    for (int i = 0; i < previous.size(); ++i) previous[i] = -1;
-
     vector<int> distances_from_src(G.size(), INF);
     distances_from_src[source] = 0;
+    previous[source] = -1;
     set<int> visited;
     priority_queue<Edge> next_vertex;
 
@@ -38,12 +37,6 @@ vector<int> dijkstra_shortest_path(const Graph& G, int source, vector<int>& prev
 }
 
 vector<int> extract_shortest_path(const vector<int>& distances, const vector<int>& previous, int destination) {
-    cerr << "previous: ";
-    for (auto p: previous) {
-        cerr << p << endl;
-    }
-    cerr << endl;
-
     vector<int> shortest_path;
 /*
     int current_vector = destination;
